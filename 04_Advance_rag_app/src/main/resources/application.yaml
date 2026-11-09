@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: spring-ai-ollama
+  datasource:
+    url: jdbc:postgresql://localhost:5434/chatmemory
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        options:
+          model: nomic-embed-text
+      chat:
+        options:
+          model: codellama
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 768
+        max-document-batch-size: 10000
+        initialize-schema: true
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+
+logging:
+  level:
+    org.springframework.ai.chat.client.advisor: DEBUG
+    org.springframework.jdbc.datasource.init: DEBUG
+
+server:
+  port: 8081
